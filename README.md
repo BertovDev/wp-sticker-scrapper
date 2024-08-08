@@ -19,3 +19,7 @@ Requirements:
 
 Todo:
 - Autoimport stickers to a wp sticker package -- Any sugestion?
+
+
+Disclaimer
+I created this because I am in multiple whatsapp group that I do not care what they talk but I want their stickers 😎🤙
