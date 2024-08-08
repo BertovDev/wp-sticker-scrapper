@@ -1,9 +1,12 @@
 const { Console } = require("console");
 const fs = require("fs");
+const { env } = require("process");
 const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth } = require("whatsapp-web.js");
 
-const GROUP_TO_SCRAPP = "GROUP NAME";
+const data = JSON.parse(fs.readFileSync("information.json"));
+const GROUP_TO_SCRAPP = data.group_name;
+
 const LIMIT_MESSAGES_TO_SCRAPP = 1000;
 
 const client = new Client({
@@ -20,6 +23,10 @@ const getChats = async () => {
 };
 
 const getMessagesWithMedia = (messages) => {
+  if (!messages) {
+    console.error("Group not found");
+    return [];
+  }
   return messages.filter((message) => message.hasMedia);
 };
 
@@ -44,8 +51,10 @@ const downloadAndSaveStickers = async (messages) => {
   getMessagesWithMedia(messages).forEach(async (msg) => {
     const media = await msg.downloadMedia();
     //only save stickers
-    if (media.mimetype === "image/webp") {
-      saveMedia(msg, media);
+    if (media !== undefined) {
+      if (media.mimetype === "image/webp") {
+        saveMedia(msg, media);
+      }
     }
   });
 };
